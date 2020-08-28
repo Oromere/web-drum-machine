@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function Sound({ id, number, name, onTrigger, stepCount, currentStep }) {
   return (
-    <div>
+    <div className="sound">
       <div className="sound-title">{name}</div>
       <div className="sound-local-controls"></div>
       <div className="sound-pads">
