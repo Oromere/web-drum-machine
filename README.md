@@ -1,4 +1,4 @@
-# Web Drum machine
+# Web Drum Machine
 
 ## Available Scripts
 

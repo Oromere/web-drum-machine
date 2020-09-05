@@ -7,11 +7,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>Web Drum machine</p>
+        <p>Web Drum Machine</p>
       </header>
-      <section>
+      <main className="App-content">
         <Sequencer />
-      </section>
+      </main>
     </div>
   );
 }

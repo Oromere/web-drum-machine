@@ -1,10 +1,19 @@
 import React, { useState } from "react";
+import LocalControls from "./LocalControls";
 
-export default function Sound({ id, number, name, onTrigger, stepCount, currentStep }) {
+export default function Sound({
+  id,
+  number,
+  name,
+  onTrigger,
+  stepCount,
+  currentStep,
+  onVolumeChange,
+}) {
   return (
     <div className="sound">
       <div className="sound-title">{name}</div>
-      <div className="sound-local-controls"></div>
+      <LocalControls onVolumeChange={onVolumeChange} />
       <div className="sound-pads">
         {[...Array(stepCount)].map((e, index) => (
           <Pad
@@ -25,7 +34,9 @@ function Pad({ onTrigger, index, soundNumber, highlighted }) {
 
   return (
     <button
-      className={`${active ? "active" : ""} ${highlighted ? "highlighted": ""}`}
+      className={`${active ? "active" : ""} ${
+        highlighted ? "highlighted" : ""
+      }`}
       onClick={() => {
         onTrigger(index, soundNumber);
         setActive(!active);

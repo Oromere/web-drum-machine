@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 :root {
   --orange: hsla(32, 100%, 50%, 1);
   --yellow: hsla(49, 99%, 50%, 1);
@@ -19,7 +15,6 @@
   --blue-grey: #263238;
   --light-blue-grey: #4f5b62;
 
-
   /* abstract our colours */
   --boxMain: var(--dark-blue-grey);
   --boxSecond: var(--blue-grey);
@@ -28,15 +23,25 @@
   --borderRad: 2px;
 }
 
+.App {
+  text-align: center;
+  background-color: var(--boxSecond);
+}
+
 .App-header {
   background-color: var(--boxMain);
-  min-height: 5vh;
+  height: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.App-content {
+  display: flex;
+  height: 95vh;
 }
 
 * {
@@ -83,6 +88,7 @@ h2 {
 
 /* sequencer ~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #sequencer {
+  flex: 1 1 auto;
   width: 84vw;
   max-width: 900px;
   min-width: 600px;
@@ -101,6 +107,7 @@ h2 {
   grid-template-columns: repeat(5, auto);
   align-items: center;
   font-size: 120%;
+  color: var(--white);
 }
 
 .controls-main label {
@@ -119,7 +126,9 @@ h2 {
   border-radius: var(--borderRad);
   background-color: var(--boxSecond);
   cursor: pointer;
-  background: var(--green) url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" fill="black" /></svg>') no-repeat center center;
+  background: var(--green)
+    url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" fill="black" /></svg>')
+    no-repeat center center;
   background-size: 60% 60%;
   min-height: 50px;
 }
@@ -129,15 +138,21 @@ h2 {
 }
 
 .play-button.active {
-  background: var(--red) url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z" fill="black" /></svg>') no-repeat center center;
+  background: var(--red)
+    url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z" fill="black" /></svg>')
+    no-repeat center center;
   background-size: 60% 60%;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~ main body */
+.sounds-container {
+  height: 100%;
+}
+
 [class^="sound"] {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 10% 15% 75%;
+  grid-template-columns: 10% 25% 65%;
   align-items: center;
   padding: 0.5vmin;
 }
@@ -172,20 +187,24 @@ h2 {
 /* ~~~~~~~~~~~~~~~~~~~~~~~ pads */
 .sound-pads {
   display: flex;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
 }
 
 .sound-pads button {
   width: 5vw;
   height: 5vw;
-  min-width: 56px;
-  min-height: 56px;
-  max-width: 96px;
-  max-height: 96px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 56px;
+  max-height: 56px;
   margin: 0;
   padding: 0;
   background-color: var(--white);
-  border: var(--border);
+  border: 0.25vmin solid var(--black);
+}
+
+.sound-pads button:nth-of-type(4n + 5) {
+  margin-left: 1vmin;
 }
 
 .sound-pads button.active {
@@ -202,12 +221,12 @@ h2 {
 
 /* range input styling ~~~~~~~~~~~~~~~~~~~ */
 
-input[type=range] {
+input[type="range"] {
   -webkit-appearance: none;
   background: transparent;
 }
 
-input[type=range]::-ms-track {
+input[type="range"]::-ms-track {
   width: 100%;
   cursor: pointer;
   background: transparent;
@@ -215,68 +234,110 @@ input[type=range]::-ms-track {
   color: transparent;
 }
 
-input[type=range]::-webkit-slider-thumb {
+/* thumb */
+
+input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   margin-top: -1vh;
   height: 4vh;
-  width: 2vw;
+  width: 0.5vw;
   border: 0.5vmin solid var(--black);
   border-radius: var(--borderRad);
-  background-color: var(--boxSecond);
+  background-color: var(--white);
   cursor: pointer;
 }
 
-input[type=range]::-moz-range-thumb {
+input[type="range"]::-moz-range-thumb {
   height: 4vh;
-  width: 2vw;
+  width: 0.5vw;
   border: 0.5vmin solid var(--black);
   border-radius: var(--borderRad);
-  background-color: var(--boxSecond);
+  background-color: var(--white);
   cursor: pointer;
 }
 
-input[type=range]::-ms-thumb {
+input[type="range"]::-ms-thumb {
   height: 4vh;
-  width: 2vw;
+  width: 0.5vw;
   border: 0.5vmin solid var(--black);
   border-radius: var(--borderRad);
-  background-color: var(--boxSecond);
+  background-color: var(--white);
   cursor: pointer;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
   height: 2vh;
   cursor: pointer;
   background-color: var(--black);
   border-radius: var(--borderRad);
 }
 
-input[type=range]::-moz-range-track {
+input[type="range"]::-moz-range-track {
   height: 2vh;
   cursor: pointer;
   background-color: var(--black);
   border-radius: var(--borderRad);
 }
 
-input[type=range]::-ms-track {
+input[type="range"]::-ms-track {
   height: 2vh;
   cursor: pointer;
   background-color: var(--black);
   border-radius: var(--borderRad);
 }
 
-input[type=range]:focus {
+input[type="range"]:focus {
   outline: none;
 }
 
-input[type=range]:focus::-webkit-slider-thumb {
+input[type="range"]:focus::-webkit-slider-thumb {
   background-color: var(--boxHigh);
 }
 
-input[type=range]:focus::-moz-range-thumb {
+input[type="range"]:focus::-moz-range-thumb {
   background-color: var(--boxHigh);
 }
 
-input[type=range]:focus::-ms-thumb {
+input[type="range"]:focus::-ms-thumb {
   background-color: var(--boxHigh);
+}
+
+/* local controls input styling ~~~~~~~~~~~~~~~~~~~ */
+
+.sound-local-controls .current-value {
+  display: none;
+}
+
+.sound-local-controls label {
+  color: var(--white);
+}
+
+.sound-local-controls input[type="range"]::-moz-range-thumb {
+  height: 2vh;
+  width: 0.5vw;
+  border: 0.25vmin solid var(--black);
+}
+
+.sound-local-controls input[type="range"]::-webkit-slider-thumb {
+  height: 2vh;
+  width: 0.5vw;
+  border: 0.25vmin solid var(--black);
+}
+
+.sound-local-controls input[type="range"]::-ms-thumb {
+  height: 2vh;
+  width: 0.5vw;
+  border: 0.25vmin solid var(--black);
+}
+
+.sound-local-controls input[type="range"]::-webkit-slider-runnable-track {
+  height: 1vh;
+}
+
+.sound-local-controls input[type="range"]::-moz-range-track {
+  height: 1vh;
+}
+
+.sound-local-controls input[type="range"]::-ms-track {
+  height: 1vh;
 }
