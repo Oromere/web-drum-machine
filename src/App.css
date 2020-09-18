@@ -40,7 +40,6 @@
 }
 
 .App-content {
-  display: flex;
   height: 95vh;
 }
 
@@ -151,8 +150,8 @@ h2 {
 
 [class^="sound"] {
   display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 10% 25% 65%;
+  grid-template-rows: auto auto;
+  grid-template-columns: 10% 5% 85%;
   align-items: center;
   padding: 0.5vmin;
 }
@@ -160,14 +159,39 @@ h2 {
 .sound-title {
   font-size: 150%;
   font-weight: 600;
+  color: var(--white)
+}
+
+.sound-local-controls-trigger {
+  display: block;
+  justify-self: start;
+}
+
+.sound-local-controls-trigger button{
+  background: none;
+  border: none;
+}
+
+.sound-local-controls-trigger img{
+  height: auto;
+  width: 3vh;
+  cursor: pointer;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~ sliders */
 .sound-local-controls {
+  grid-column: 1 / span 3 ;
+  grid-row: 2 / span 1;
   display: grid;
-  grid-template-rows: repeat(2, auto);
-  grid-template-columns: 1fr 4fr;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(4, 25%);
   align-items: center;
+  background-color: var(--light-blue-grey);
+  border: var(--border);
+}
+
+.sound-local-controls[visable="false"] {
+  display: none;
 }
 
 .sound-local-controls label {
@@ -177,11 +201,6 @@ h2 {
 
 .sound-local-controls input {
   margin-right: 20px;
-}
-
-.sound-local-controls input:nth-of-type(2),
-.sound-local-controls label:nth-of-type(2) {
-  margin-top: 20px;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~ pads */

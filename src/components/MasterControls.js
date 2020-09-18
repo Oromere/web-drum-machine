@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Transport, Destination } from "tone";
 import VolumeInput from "./VolumeInput";
 
-export default function MasterControls({ onPlayButtonPress, playDisabled }) {
+export default function MasterControls({ onPlayButtonPress }) {
   const [started, setStarted] = useState(false);
   const [bpm, setBPM] = useState(120);
 
@@ -33,7 +33,6 @@ export default function MasterControls({ onPlayButtonPress, playDisabled }) {
         className={`play-button ${started ? "active" : ""}`}
         onClick={handlePlayButtonClick}
         title={started ? "Stop" : "Start"}
-        disabled={playDisabled}
       ></button>
       <div>
         <label htmlFor="bpm">BPM</label>
