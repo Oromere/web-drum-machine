@@ -184,7 +184,7 @@ h2 {
   grid-row: 2 / span 1;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: repeat(4, 25%);
+  grid-template-columns: repeat(5, 20%);
   align-items: center;
   background-color: var(--light-blue-grey);
   border: var(--border);

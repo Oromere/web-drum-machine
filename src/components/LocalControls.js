@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import VolumeInput from "./VolumeInput";
+import RangeInput from "./RangeInput";
 
 export default function LocalControls({
   visable,
   onVolumeChange,
   onPitchChange,
-  onAttackChange,
-  onDecayChange,
-  onSustainChange,
-  onReleaseChange,
+	onTempoChange,
+	onReverbChange
 }) {
   return (
     <div className="sound-local-controls" visable={visable ? "true" : "false"}>
       <VolumeInput onChange={onVolumeChange} />
       <PitchInput onChange={onPitchChange} />
+      <TempoInput onChange={onTempoChange} />
+			<ReverbInput onChange={onReverbChange} />
+
     </div>
   );
 }
@@ -29,21 +31,60 @@ function PitchInput({ onChange }) {
   };
 
   return (
-    <div>
-      <label htmlFor="pitch">Pitch</label>
-      <input
-        name="pitch"
-        id="pitch"
-        type="range"
-        min="-1200"
-        max="1200"
-        value={pitch}
-        step="50"
-        onChange={handleChange}
-      />
-      <span className="current-value" id="pitchVal">
-        {pitch}
-      </span>
-    </div>
+    <RangeInput
+      name={"pitch"}
+      label={"Pitch"}
+      max={1200}
+      min={-1200}
+      step={50}
+      value={pitch}
+      onChange={handleChange}
+    />
+  );
+}
+
+function TempoInput({ onChange }) {
+  const [tempo, setTempo] = useState(1);
+
+  const handleChange = (event) => {
+    const input = event.target.value;
+    const value = parseFloat(input);
+    setTempo(value);
+    onChange(value);
+  };
+
+  return (
+		<RangeInput
+      name={"tempo"}
+      label={"Tempo"}
+      max={3}
+      min={0.1}
+      step={0.1}
+      value={tempo}
+      onChange={handleChange}
+    />
+  );
+}
+
+function ReverbInput({ onChange }) {
+  const [reverb, setReverb] = useState(0);
+
+  const handleChange = (event) => {
+    const input = event.target.value;
+    const value = parseFloat(input);
+    setReverb(value);
+    onChange(value);
+  };
+
+  return (
+		<RangeInput
+      name={"reverb"}
+      label={"Reverb"}
+      max={1}
+      min={0}
+      step={0.1}
+      value={reverb}
+      onChange={handleChange}
+    />
   );
 }

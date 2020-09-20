@@ -7,12 +7,7 @@ export default function Sound({
   number,
   onTrigger,
   stepCount,
-  currentStep,
-  onVolumeChange,
-  onAttackChange,
-  onDecayChange,
-  onSustainChange,
-  onReleaseChange
+  currentStep
 }) {
   
   const [controlsVisable, setControlsVisable] = useState(false);
@@ -40,6 +35,8 @@ export default function Sound({
         visable={controlsVisable}
         onVolumeChange={instrument.setVolume}
         onPitchChange={instrument.setPitchShift}
+        onTempoChange={instrument.setTempo}
+        onReverbChange={instrument.setReverb}
       />
     </div>
   );
