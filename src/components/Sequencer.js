@@ -1,90 +1,149 @@
 import React, { Component } from "react";
-import Sound from "./Sound";
 import MasterControls from "./MasterControls";
-import { Sequence, Draw, Destination } from "tone";
-import Instrument from "./instrument";
-import { sounds } from "../assets/sounds";
+import { Sequence, Draw, Destination, Transport } from "tone";
+import LocalPatternConrols from "./LocalPatternControls";
+import Pattern from "../models/pattern";
+import Pads from "./Pads";
 
 class Sequencer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeSteps: [],
+            patterns: [],
             currentStep: -1,
-            instruments: [],
+            activePattern: 0,
+            playingPattern: null,
+            patternUpdated: 0,
+            repeats: 0
         };
 
-        this.handleNoteTrigger = this.handleNoteTrigger.bind(this);
         this.tick = this.tick.bind(this);
-        this.triggerInstrument = this.triggerInstrument.bind(this);
+        this.handlePlayButtonPressed = this.handlePlayButtonPressed.bind(this);
     }
 
     componentDidMount() {
-        this.steps = 16;
-        this.subdivision = "16n";
-        const instruments = sounds.map(
-            (sound) => new Instrument(sound.src, sound.name)
-        );
-
-        this.setState({
-            activeSteps: this.setupMatrix(),
-            instruments: instruments,
-        });
-
         Destination.volume.value = 0;
 
-        this.sequencer = new Sequence(
-            this.tick,
-            [...Array(this.steps).keys()],
-            this.subdivision
-        ).start(0);
-    }
-    // create 16 x 4 array filled with false
-    setupMatrix = () => {
-        return Array.from(Array(this.steps), () =>
-            Array(this.state.instruments.length).fill(false)
-        );
-    };
+        const patterns = [
+            new Pattern(this.tick, 0),
+            new Pattern(this.tick, 1),
+            new Pattern(this.tick, 2),
+            new Pattern(this.tick, 3),
+        ];
+        patterns[0].setActive(true);
 
-    triggerInstrument(row, time) {
-        this.state.instruments[row].trigger(time);
-    }
-
-    tick(time, index) {
-        Draw.schedule(() => {
-            this.setState({ currentStep: index });
-        }, time);
-
-        this.state.activeSteps[index].forEach((value, rowIndex) => {
-            if (value) {
-                this.triggerInstrument(rowIndex, time);
-            }
+        this.setState({
+            patterns: patterns,
         });
     }
 
-    handleNoteTrigger(column, row) {
-        const newMatrix = this.state.activeSteps;
-        newMatrix[column][row] = !this.state.activeSteps[column][row];
-        this.setState({ activeSteps: newMatrix });
+    tick(time, index, patternNumber) {
+        const pattern = this.state.patterns[patternNumber];
+
+        Draw.schedule(() => {
+            if (patternNumber !== this.state.playingPattern) {
+                this.setState({
+                    playingPattern: patternNumber,
+                    currentStep: index,
+                    repeats: pattern.repeats
+                });
+            } else {
+                this.setState({ currentStep: index });
+            }
+        }, time);
+
+        pattern.steps[index].forEach((step, index) => {
+            if (step === true) {
+                pattern.triggerInstrument(index, time);
+            }
+        });
+
+        const {repeats} = this.state
+        // if index == currentPattern length call the next active sequence
+        if (index === pattern.stepLength - 1) {
+            if (repeats == 0) {
+                const next = this.findNextSequence(patternNumber);
+                if (next !== null && next !== patternNumber) {
+                    pattern.sequence.stop();
+                    const nextSequence = this.state.patterns[next].sequence;
+                    nextSequence.start(Transport.seconds);
+                }
+            } else {
+                this.setState({
+                    repeats: repeats - 1
+                })
+            }
+        }
+    }
+
+    findNextSequence = (current) => {
+        const patterns = this.state.patterns;
+        let index = current;
+        while (true) {
+            index++;
+            if (index > patterns.length - 1) {
+                index = 0;
+            }
+
+            if (patterns[index].active) {
+                return index;
+            }
+        }
+    };
+
+    handlePlayButtonPressed() {
+        const { patterns } = this.state;
+        this.setState({ currentStep: -1, playingPattern: null });
+        // stop all sequence
+        patterns.forEach((pattern) => pattern.sequence.stop());
+        // start first active sequence, -1 to start with 0
+        const next = this.findNextSequence(-1);
+        patterns[next].sequence.start(0);
     }
 
     render() {
         return (
             <div name="sequencer">
-                <MasterControls
-                    onPlayButtonPress={() => this.setState({ currentStep: -1 })}
-                />
-                <section>
-                    {this.state.instruments.map((instrument, index) => (
-                        <Sound
-                            key={`sound-${instrument.name}`}
-                            instrument={instrument}
-                            number={index}
-                            onTrigger={this.handleNoteTrigger}
-                            stepCount={this.steps}
-                            currentStep={this.state.currentStep}
-                        />
-                    ))}
+                <section id="master-controls-container">
+                    <MasterControls
+                        onPlayButtonPress={this.handlePlayButtonPressed}
+                        patternsNumber={this.state.patterns.length}
+                        activePattern={this.state.activePattern}
+                        onActivePatternChange={(index) =>
+                            this.setState({ activePattern: index })
+                        }
+                    />
+                </section>
+                <section id="pattern-container">
+                    {this.state.patterns.map(
+                        (pattern, patternIndex) =>
+                            this.state.activePattern === patternIndex && (
+                                <div key={`pattern-${patternIndex}`}>
+                                    <LocalPatternConrols pattern={pattern} number={patternIndex} onUpdate={() => this.setState({patternUpdated: this.state.patternUpdated+1})}/>
+                                    {pattern.instruments.map(
+                                        (instrument, instrumentIndex) => (
+                                            <Pads
+                                                key={`pads-${patternIndex}-${instrument.name}-v${this.state.patternUpdated}`}
+                                                instrument={instrument}
+                                                number={instrumentIndex}
+                                                parentNumber={patternIndex}
+                                                onTrigger={pattern.toggleStep}
+                                                stepCount={pattern.stepLength}
+                                                currentStep={
+                                                    this.state.currentStep
+                                                }
+                                                currentPattern={
+                                                    this.state.playingPattern
+                                                }
+                                                activeSteps={pattern.getActiveStepsForInstrument(
+                                                    instrumentIndex
+                                                )}
+                                            />
+                                        )
+                                    )}
+                                </div>
+                            )
+                    )}
                 </section>
             </div>
         );

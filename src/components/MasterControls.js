@@ -2,13 +2,22 @@ import React, { useState } from "react";
 import { Transport, Destination } from "tone";
 import VolumeInput from "./VolumeInput";
 
-export default function MasterControls({ onPlayButtonPress }) {
+export default function MasterControls({
+    onPlayButtonPress,
+    patternsNumber,
+    activePattern,
+    onActivePatternChange,
+}) {
     const [started, setStarted] = useState(false);
     const [bpm, setBPM] = useState(120);
 
     const handlePlayButtonClick = () => {
-        !started ? Transport.start() : Transport.stop();
-        onPlayButtonPress();
+        if (!started) {
+            onPlayButtonPress();
+            Transport.start();
+        } else {
+            Transport.stop();
+        }
         setStarted(!started);
     };
 
@@ -49,6 +58,32 @@ export default function MasterControls({ onPlayButtonPress }) {
                 <span id="bpmVal">{bpm}</span>
             </div>
             <VolumeInput onChange={handleVolumeChange} />
+            <MasterPatternControls
+                patternsNumber={patternsNumber}
+                activePattern={activePattern}
+                onActivePatternChange={onActivePatternChange}
+            />
         </section>
+    );
+}
+
+function MasterPatternControls({
+    patternsNumber,
+    activePattern,
+    onActivePatternChange,
+}) {
+    return (
+        <div>
+            <label>Pattern</label>
+            {[...Array(patternsNumber)].map((val, index) => (
+                <button
+                    key={`pattern-button-${index}`}
+                    onClick={() => onActivePatternChange(index)}
+                    className={`${activePattern === index ? "active" : ""}`}
+                >
+                    {index + 1}
+                </button>
+            ))}
+        </div>
     );
 }

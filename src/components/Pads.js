@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import LocalControls from "./LocalControls";
 import settings from "../assets/icons/settings.png";
 
-export default function Sound({
+export default function Pads({
     instrument,
     number,
+    parentNumber,
     onTrigger,
     stepCount,
     currentStep,
+    currentPattern,
+    activeSteps
 }) {
     const [controlsVisable, setControlsVisable] = useState(false);
 
@@ -24,9 +27,10 @@ export default function Sound({
                     <Pad
                         onTrigger={onTrigger}
                         index={index}
-                        soundNumber={number}
+                        instrumentNumber={number}
                         key={`${instrument.name}-${index}`}
-                        highlighted={currentStep === index}
+                        highlighted={currentStep === index && parentNumber === currentPattern}
+                        activated={activeSteps[index]}
                     />
                 ))}
             </div>
@@ -41,8 +45,8 @@ export default function Sound({
     );
 }
 
-function Pad({ onTrigger, index, soundNumber, highlighted }) {
-    const [active, setActive] = useState(false);
+function Pad({ onTrigger, index, instrumentNumber, highlighted, activated }) {
+    const [active, setActive] = useState(activated);
 
     return (
         <button
@@ -50,7 +54,7 @@ function Pad({ onTrigger, index, soundNumber, highlighted }) {
                 highlighted ? "highlighted" : ""
             }`}
             onClick={() => {
-                onTrigger(index, soundNumber);
+                onTrigger(index, instrumentNumber);
                 setActive(!active);
             }}
         />
