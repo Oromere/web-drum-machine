@@ -103,18 +103,16 @@ class Sequencer extends Component {
 
     render() {
         return (
-            <div name="sequencer">
-                <section id="master-controls-container">
-                    <MasterControls
-                        onPlayButtonPress={this.handlePlayButtonPressed}
-                        patternsNumber={this.state.patterns.length}
-                        activePattern={this.state.activePattern}
-                        onActivePatternChange={(index) =>
-                            this.setState({ activePattern: index })
-                        }
-                    />
-                </section>
-                <section id="pattern-container">
+            <div id="sequencer">
+                <MasterControls
+                    onPlayButtonPress={this.handlePlayButtonPressed}
+                    patternsNumber={this.state.patterns.length}
+                    activePattern={this.state.activePattern}
+                    onActivePatternChange={(index) =>
+                        this.setState({ activePattern: index })
+                    }
+                />
+                <section className="pattern-container">
                     {this.state.patterns.map(
                         (pattern, patternIndex) =>
                             this.state.activePattern === patternIndex && (

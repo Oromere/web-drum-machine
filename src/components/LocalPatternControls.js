@@ -14,20 +14,20 @@ export default function LocalPatternControls({ pattern, number, onUpdate }) {
 
     const [repeats, setRepeats] = useState(pattern.repeats);
     useEffect(() => {
-        pattern.setRepeats(repeats)
-    }, [repeats])
+        pattern.setRepeats(repeats);
+    }, [repeats]);
 
     const onClear = () => {
-        pattern.clearSteps()
-        onUpdate()
-    }
+        pattern.clearSteps();
+        onUpdate();
+    };
 
     return (
         <div className="local-pattern-controls">
             <div className="pattern-title">{number + 1}</div>
-            <div>
-                <label>Active</label>
-                <label className="switch">
+            <div className="pattern-active-input">
+                <label htmlFor="active">Active</label>
+                <label className="switch" id="active">
                     <input
                         type="checkbox"
                         onChange={(e) => setActive(e.target.checked)}
@@ -36,7 +36,7 @@ export default function LocalPatternControls({ pattern, number, onUpdate }) {
                     <span className="slider"></span>
                 </label>
             </div>
-            <div>
+            <div className="pattern-length-input">
                 <label htmlFor="length">Length</label>
                 <select
                     name="length"
@@ -51,7 +51,7 @@ export default function LocalPatternControls({ pattern, number, onUpdate }) {
                     <option value={16}>16</option>
                 </select>
             </div>
-            <div>
+            <div className="pattern-repeats-input">
                 <label>Repeats</label>
                 <button
                     className="down-count btn btn-info"
@@ -59,7 +59,7 @@ export default function LocalPatternControls({ pattern, number, onUpdate }) {
                     disabled={repeats === 0}
                     onClick={() => setRepeats(repeats - 1)}
                 >
-                    <i className="icon-minus">-</i>
+                    -
                 </button>
                 <input
                     className="repeat-counter"
@@ -73,11 +73,11 @@ export default function LocalPatternControls({ pattern, number, onUpdate }) {
                     title="Up"
                     onClick={() => setRepeats(repeats + 1)}
                 >
-                    <i className="icon-plus">+</i>
+                    +
                 </button>
             </div>
             <div>
-                <button onClick={onClear}>Clear</button>
+                <button className="pattern-clear-button" onClick={onClear}>Clear</button>
             </div>
         </div>
     );

@@ -20,6 +20,7 @@
     --boxSecond: var(--blue-grey);
     --boxHigh: var(--light-blue-grey);
     --border: 1vmin solid var(--black);
+    --border-small: 0.25vmin solid var(--black);
     --borderRad: 2px;
 }
 
@@ -87,13 +88,8 @@ h2 {
 
 /* sequencer ~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #sequencer {
-    flex: 1 1 auto;
-    width: 84vw;
-    max-width: 900px;
-    min-width: 600px;
-    margin: 0 auto;
     background-color: var(--boxMain);
-    border: var(--border);
+    height: 100%;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~ top section */
@@ -108,6 +104,7 @@ h2 {
     align-items: center;
     font-size: 120%;
     color: var(--white);
+    height: 10vh;
 }
 
 .controls-main label,
@@ -118,6 +115,26 @@ h2 {
 
 .controls-main span {
     padding-left: 10px;
+}
+
+.pattern-container {
+    height: 85vh;
+    overflow: auto;
+}
+
+.patern-controls-main button {
+    margin: 0.5vmin;
+    background-color: var(--white);
+    height: 3vh;
+    border: 0.25vmin solid var(--black);
+    font-size: 100%;
+    cursor: pointer;
+}
+
+.patern-controls-main button.active {
+    background-color: var(--black);
+    border-color: var(--white);
+    color: var(--white);
 }
 
 /* play button */
@@ -328,8 +345,9 @@ input[type="range"]:focus::-ms-thumb {
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 4vw;
+    height: 3vh;
+    border: var(--border-small);
 }
 
 /* Hide default HTML checkbox */
@@ -355,27 +373,27 @@ input[type="range"]:focus::-ms-thumb {
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
+    height: 2vh;
+    width: 1.5vw;
+    bottom: 3px;
     left: 4px;
-    bottom: 4px;
     background-color: white;
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
 
 input:checked + .slider {
-    background-color: var(--boxMain);
+    background-color: var(--black);
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px var(--boxMain);
+    box-shadow: 0 0 1px var(--black);
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+    -webkit-transform: translateX(1.8vw);
+    -ms-transform: translateX(1.8vw);
+    transform: translateX(1.8vw);
 }
 
 /* local controls input styling ~~~~~~~~~~~~~~~~~~~ */
@@ -421,9 +439,10 @@ input:checked + .slider:before {
 /* Pattern Control Styling */
 
 .pattern-title {
-    color: var(--white);
     text-align: center;
-    border: 0.25vmin solid var(--white);
+    color: var(--black);
+    background-color: var(--white);
+    border: var(--border-small);
     width: 3vw;
     height: 3vw;
     margin: 0.5vmin;
@@ -431,20 +450,50 @@ input:checked + .slider:before {
     font-size: larger;
 }
 
+.pattern-clear-button {
+    border: var(--border-small);
+    width: 5vw;
+    height: 3vh;
+    font-size: 90%;
+}
+
+.pattern-length-input select {
+    width: 4vw;
+    height: 3vh;
+    border: var(--border-small);
+    box-sizing: border-box;
+    font-size: 90%;
+}
+
+.pattern-repeats-input button {
+    height: 3vh;
+    cursor: pointer;
+    border: var(--border-small);
+    width: 3vw;
+    background-color: lightgray;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.pattern-repeats-input button:disabled {
+    cursor: not-allowed;
+}
+
 .repeat-counter {
-    width: 45px;
+    width: 4vw;
+    height: 3vh;
+    border: var(--border-small);
     border-radius: 0px !important;
     text-align: center;
+    font-size: 90%;
 }
 
 .up-count {
-    margin-bottom: 10px;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
 }
 
 .down-count {
-    margin-bottom: 10px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
 }

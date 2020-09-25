@@ -1,4 +1,14 @@
-import { kick, snare, hihatOpen, hihatClose, clap, tom } from "./samples";
+import {
+    kick,
+    snare,
+    hihatOpen,
+    hihatClose,
+    clap,
+    tom,
+    crash,
+    percusison,
+    cowbell,
+} from "./samples";
 export const sounds = [
     {
         id: 0,
@@ -29,5 +39,20 @@ export const sounds = [
         id: 5,
         name: "Tom",
         src: tom,
+    },
+    {
+        id: 6,
+        name: "Crash",
+        src: crash,
+    },
+    {
+        id: 7,
+        name: "Percusison",
+        src: percusison,
+    },
+    {
+        id: 8,
+        name: "Cowbell",
+        src: cowbell,
     },
 ];

@@ -73,7 +73,7 @@ function MasterPatternControls({
     onActivePatternChange,
 }) {
     return (
-        <div>
+        <div className="patern-controls-main">
             <label>Pattern</label>
             {[...Array(patternsNumber)].map((val, index) => (
                 <button
