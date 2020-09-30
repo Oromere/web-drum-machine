@@ -1,6 +1,6 @@
 import { sounds } from "../assets/sounds";
 import Instrument from "./instrument";
-import { Sequence } from "tone";
+import { Sequence, Transport } from "tone";
 
 export default class Pattern {
     constructor(sequenceCallback, number) {
@@ -44,19 +44,31 @@ export default class Pattern {
             );
             newSteps = this.steps.concat(differenceArray);
         }
-        this.steps = newSteps;
-        this.stepLength = length;
-
+        
+       
         const sequenceCB = this.sequence.callback;
+        const progress = this.sequence.progress;
+
         if (this.sequence) {
             this.sequence.dispose();
         }
 
         this.sequence = new Sequence(
             sequenceCB,
-            [...Array(this.stepLength).keys()],
+            [...Array(length).keys()],
             "16n"
         );
+
+        // try to resume play at last step
+        if (progress !== 0) {
+            const stepProgress = 1 / this.stepLength
+            let current = progress / stepProgress
+            current = Math.ceil(current)
+            this.sequence.start(Transport.seconds, current)
+        }
+
+        this.steps = newSteps;
+        this.stepLength = length;
     }
 
     setActive(active) {
