@@ -38,7 +38,6 @@ export default class Pattern {
             newSteps = this.steps.slice(0, length);
         } else {
             // take old steps and add the difference as empty steps
-            console.log("newlengt", length - this.stepLength);
             const differenceArray = setupMatrix(
                 length - this.stepLength,
                 this.instruments.length

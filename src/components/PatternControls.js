@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function LocalPatternControls({ pattern, number, onUpdate }) {
+export default function PatternControls({ pattern, number, onUpdate }) {
     const [active, setActive] = useState(pattern.active);
     useEffect(() => {
         pattern.setActive(active);
@@ -21,6 +21,12 @@ export default function LocalPatternControls({ pattern, number, onUpdate }) {
         pattern.clearSteps();
         onUpdate();
     };
+
+    useEffect(() => {
+        setActive(pattern.active);
+        setStepLength(pattern.stepLength);
+        setRepeats(pattern.repeats)
+    }, [pattern])
 
     return (
         <div className="local-pattern-controls">

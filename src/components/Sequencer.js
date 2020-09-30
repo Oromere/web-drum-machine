@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MasterControls from "./MasterControls";
-import { Sequence, Draw, Destination, Transport } from "tone";
-import LocalPatternConrols from "./LocalPatternControls";
+import { Draw, Destination, Transport } from "tone";
+import PatternConrols from "./PatternControls";
 import Pattern from "../models/pattern";
 import Pads from "./Pads";
 
@@ -14,7 +14,7 @@ class Sequencer extends Component {
             activePattern: 0,
             playingPattern: null,
             patternUpdated: 0,
-            repeats: 0
+            repeats: 0,
         };
 
         this.tick = this.tick.bind(this);
@@ -45,7 +45,7 @@ class Sequencer extends Component {
                 this.setState({
                     playingPattern: patternNumber,
                     currentStep: index,
-                    repeats: pattern.repeats
+                    repeats: pattern.repeats,
                 });
             } else {
                 this.setState({ currentStep: index });
@@ -58,7 +58,7 @@ class Sequencer extends Component {
             }
         });
 
-        const {repeats} = this.state
+        const { repeats } = this.state;
         // if index == currentPattern length call the next active sequence
         if (index === pattern.stepLength - 1) {
             if (repeats == 0) {
@@ -70,8 +70,8 @@ class Sequencer extends Component {
                 }
             } else {
                 this.setState({
-                    repeats: repeats - 1
-                })
+                    repeats: repeats - 1,
+                });
             }
         }
     }
@@ -102,6 +102,9 @@ class Sequencer extends Component {
     }
 
     render() {
+        const { patterns, activePattern } = this.state;
+        const currentPattern = patterns[activePattern];
+        const noActivatedPattern = patterns.find(pattern => pattern.active) === undefined
         return (
             <div id="sequencer">
                 <MasterControls
@@ -111,36 +114,41 @@ class Sequencer extends Component {
                     onActivePatternChange={(index) =>
                         this.setState({ activePattern: index })
                     }
+                    noActivatedPattern={noActivatedPattern}
                 />
                 <section className="pattern-container">
-                    {this.state.patterns.map(
-                        (pattern, patternIndex) =>
-                            this.state.activePattern === patternIndex && (
-                                <div key={`pattern-${patternIndex}`}>
-                                    <LocalPatternConrols pattern={pattern} number={patternIndex} onUpdate={() => this.setState({patternUpdated: this.state.patternUpdated+1})}/>
-                                    {pattern.instruments.map(
-                                        (instrument, instrumentIndex) => (
-                                            <Pads
-                                                key={`pads-${patternIndex}-${instrument.name}-v${this.state.patternUpdated}`}
-                                                instrument={instrument}
-                                                number={instrumentIndex}
-                                                parentNumber={patternIndex}
-                                                onTrigger={pattern.toggleStep}
-                                                stepCount={pattern.stepLength}
-                                                currentStep={
-                                                    this.state.currentStep
-                                                }
-                                                currentPattern={
-                                                    this.state.playingPattern
-                                                }
-                                                activeSteps={pattern.getActiveStepsForInstrument(
-                                                    instrumentIndex
-                                                )}
-                                            />
-                                        )
-                                    )}
-                                </div>
-                            )
+                    {currentPattern !== undefined && (
+                        <div>
+                            <PatternConrols
+                                pattern={currentPattern}
+                                number={activePattern}
+                                onUpdate={() =>
+                                    this.setState({
+                                        patternUpdated:
+                                            this.state.patternUpdated + 1,
+                                    })
+                                }
+                            />
+                            {currentPattern.instruments.map(
+                                (instrument, instrumentIndex) => (
+                                    <Pads
+                                        key={`pads-${activePattern}-${instrument.name}-v${this.state.patternUpdated}`}
+                                        instrument={instrument}
+                                        number={instrumentIndex}
+                                        parentNumber={activePattern}
+                                        onTrigger={currentPattern.toggleStep}
+                                        stepCount={currentPattern.stepLength}
+                                        currentStep={this.state.currentStep}
+                                        currentPattern={
+                                            this.state.playingPattern
+                                        }
+                                        activeSteps={currentPattern.getActiveStepsForInstrument(
+                                            instrumentIndex
+                                        )}
+                                    />
+                                )
+                            )}
+                        </div>
                     )}
                 </section>
             </div>

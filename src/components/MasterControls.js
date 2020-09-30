@@ -7,11 +7,17 @@ export default function MasterControls({
     patternsNumber,
     activePattern,
     onActivePatternChange,
+    noActivatedPattern
 }) {
     const [started, setStarted] = useState(false);
     const [bpm, setBPM] = useState(120);
 
     const handlePlayButtonClick = () => {
+        if(noActivatedPattern){
+            alert("Activate atleast one pattern!");
+            return;
+        }
+        
         if (!started) {
             onPlayButtonPress();
             Transport.start();
