@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Transport, Destination } from "tone";
+import * as Tone from "tone";
 import VolumeInput from "./VolumeInput";
 
 export default function MasterControls({
@@ -7,12 +7,17 @@ export default function MasterControls({
     patternsNumber,
     activePattern,
     onActivePatternChange,
-    noActivatedPattern
+    noActivatedPattern,
+    toneStarted
 }) {
     const [started, setStarted] = useState(false);
     const [bpm, setBPM] = useState(120);
 
-    const handlePlayButtonClick = () => {
+    const handlePlayButtonClick = async () => {
+        if(!toneStarted){
+            await Tone.start()
+        }
+
         if(noActivatedPattern){
             alert("Activate atleast one pattern!");
             return;
@@ -20,9 +25,9 @@ export default function MasterControls({
         
         if (!started) {
             onPlayButtonPress();
-            Transport.start();
+            Tone.Transport.start();
         } else {
-            Transport.stop();
+            Tone.Transport.stop();
         }
         setStarted(!started);
     };
@@ -30,15 +35,15 @@ export default function MasterControls({
     const handleBPMChange = (event) => {
         const value = event.target.value;
         setBPM(parseFloat(value));
-        Transport.bpm.value = parseFloat(value);
+        Tone.Transport.bpm.value = parseFloat(value);
     };
 
     const handleVolumeChange = (value) => {
         if (value === -40) {
-            Destination.mute = true;
+            Tone.Destination.mute = true;
         } else {
-            Destination.mute = false;
-            Destination.volume.value = parseFloat(value);
+            Tone.Destination.mute = false;
+            Tone.Destination.volume.value = parseFloat(value);
         }
     };
 

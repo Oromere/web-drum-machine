@@ -15,6 +15,7 @@ class Sequencer extends Component {
             playingPattern: null,
             patternUpdated: 0,
             repeats: 0,
+            toneStarted: false
         };
 
         this.tick = this.tick.bind(this);
@@ -93,7 +94,7 @@ class Sequencer extends Component {
 
     handlePlayButtonPressed() {
         const { patterns } = this.state;
-        this.setState({ currentStep: -1, playingPattern: null });
+        this.setState({ currentStep: -1, playingPattern: null, toneStarted: true });
         // stop all sequence
         patterns.forEach((pattern) => pattern.sequence.stop());
         // start first active sequence, -1 to start with 0
@@ -102,7 +103,7 @@ class Sequencer extends Component {
     }
 
     render() {
-        const { patterns, activePattern } = this.state;
+        const { patterns, activePattern, toneStarted } = this.state;
         const currentPattern = patterns[activePattern];
         const noActivatedPattern = patterns.find(pattern => pattern.active) === undefined
         return (
@@ -115,6 +116,7 @@ class Sequencer extends Component {
                         this.setState({ activePattern: index })
                     }
                     noActivatedPattern={noActivatedPattern}
+                    toneStarted={toneStarted}
                 />
                 <section className="pattern-container">
                     {currentPattern !== undefined && (
