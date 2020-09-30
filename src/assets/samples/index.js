@@ -7,3 +7,4 @@ export const tom = require("./tom-808.wav");
 export const crash = require("./crash-808.wav");
 export const percusison = require("./perc-808.wav");
 export const cowbell = require("./cowbell-808.wav");
+/* Sounds are from https://99sounds.org/drum-samples/ */

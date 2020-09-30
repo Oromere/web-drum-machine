@@ -22,6 +22,7 @@ export default function PatternControls({ pattern, number, onUpdate }) {
         onUpdate();
     };
 
+    // update states after props updated
     useEffect(() => {
         setActive(pattern.active);
         setStepLength(pattern.stepLength);
