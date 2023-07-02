@@ -7,26 +7,28 @@
     "name": "Florian Schlüter"
   },
   "engines": {
-    "npm": "8.19.3",
-    "node": "16.19.0"
+    "npm": ">=8",
+    "node": ">=16"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
     "serve": "^14.2.0",
     "tone": "^14.7.39"
   },
   "scripts": {
     "start": "serve build -s -n -L -p $PORT",
     "dev": "react-scripts start",
-    "react-build": "react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,5 +44,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/eslint-parser": "^7.22.5",
+    "@babel/preset-react": "^7.22.5",
+    "eslint": "^8.44.0",
+    "eslint-plugin-react": "^7.32.2"
   }
 }
