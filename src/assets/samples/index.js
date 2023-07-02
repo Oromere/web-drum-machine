@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export const kick = require("./kick-808.wav");
 export const snare = require("./snare-808.wav");
 export const hihatOpen = require("./openhat-808.wav");

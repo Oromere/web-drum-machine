@@ -80,7 +80,8 @@ class Sequencer extends Component {
     findNextSequence = (current) => {
         const patterns = this.state.patterns;
         let index = current;
-        while (true) {
+        const loop = true;
+        while (loop) {
             index++;
             if (index > patterns.length - 1) {
                 index = 0;

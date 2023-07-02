@@ -209,10 +209,6 @@ h2 {
     border: var(--border);
 }
 
-.sound-local-controls[visable="false"] {
-    display: none;
-}
-
 .sound-local-controls label {
     justify-self: end;
     padding-right: 10px;
